@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Menu, Search, User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useCart } from "@/hooks/useCart";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { user, signOut } = useAuth();
+  const { getTotalItems } = useCart();
   const navigate = useNavigate();
 
   return (
@@ -32,8 +35,16 @@ const Header = () => {
             <Button variant="ghost" size="icon">
               <Search className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="relative" onClick={() => navigate('/cart')}>
               <ShoppingCart className="h-4 w-4" />
+              {getTotalItems() > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {getTotalItems()}
+                </Badge>
+              )}
             </Button>
             
             {user ? (

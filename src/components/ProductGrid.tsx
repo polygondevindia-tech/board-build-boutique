@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, ShoppingCart } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
 import pcbArduino from "@/assets/pcb-arduino.jpg";
 import pcbSensor from "@/assets/pcb-sensor.jpg";
 import pcbCustom from "@/assets/pcb-custom.jpg";
@@ -41,6 +42,18 @@ const products = [
 ];
 
 const ProductGrid = () => {
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (product: typeof products[0]) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category,
+    });
+  };
+
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -111,6 +124,7 @@ const ProductGrid = () => {
                   className="w-full" 
                   variant={product.inStock ? "default" : "secondary"}
                   disabled={!product.inStock}
+                  onClick={() => product.inStock && handleAddToCart(product)}
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   {product.inStock ? "Add to Cart" : "Notify When Available"}
