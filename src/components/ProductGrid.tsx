@@ -1,58 +1,64 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, Loader2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useProducts } from "@/hooks/useProducts";
 import pcbArduino from "@/assets/pcb-arduino.jpg";
 import pcbSensor from "@/assets/pcb-sensor.jpg";
 import pcbCustom from "@/assets/pcb-custom.jpg";
 
-const products = [
-  {
-    id: 1,
-    name: "Arduino Compatible Dev Board",
-    price: "$24.99",
-    originalPrice: "$29.99",
-    image: pcbArduino,
-    rating: 4.8,
-    reviews: 156,
-    category: "Development Boards",
-    inStock: true
-  },
-  {
-    id: 2,
-    name: "Multi-Sensor Module PCB",
-    price: "$18.99",
-    image: pcbSensor,
-    rating: 4.9,
-    reviews: 89,
-    category: "Sensor Modules",
-    inStock: true
-  },
-  {
-    id: 3,
-    name: "Custom Prototype Board",
-    price: "$15.99",
-    image: pcbCustom,
-    rating: 4.7,
-    reviews: 234,
-    category: "Prototyping",
-    inStock: false
-  }
-];
+// Fallback images for products without images
+const fallbackImages = [pcbArduino, pcbSensor, pcbCustom];
 
 const ProductGrid = () => {
   const { addToCart } = useCart();
+  const { products, loading, error } = useProducts();
 
-  const handleAddToCart = (product: typeof products[0]) => {
+  const getProductImage = (product: any, index: number) => {
+    if (product.image_url) {
+      return product.image_url;
+    }
+    return fallbackImages[index % fallbackImages.length];
+  };
+
+  const handleAddToCart = (product: any) => {
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.price,
-      image: product.image,
+      price: `$${product.price}`,
+      image: getProductImage(product, 0),
       category: product.category,
     });
   };
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Loader2 className="h-8 w-8 animate-spin" />
+            <span className="ml-2 text-lg">Loading products...</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center min-h-[400px] flex items-center justify-center">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Failed to load products</h3>
+              <p className="text-muted-foreground">{error}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-background">
@@ -69,24 +75,24 @@ const ProductGrid = () => {
 
         {/* Product Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
+          {products.map((product, index) => (
             <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
               <CardHeader className="p-0">
                 <div className="relative overflow-hidden">
                   <img 
-                    src={product.image} 
+                    src={getProductImage(product, index)} 
                     alt={product.name}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-4 left-4">
                     <Badge variant="secondary">{product.category}</Badge>
                   </div>
-                  {product.originalPrice && (
+                  {product.original_price && (
                     <div className="absolute top-4 right-4">
                       <Badge variant="destructive">Sale</Badge>
                     </div>
                   )}
-                  {!product.inStock && (
+                  {!product.in_stock && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <Badge variant="outline" className="bg-background">Out of Stock</Badge>
                     </div>
@@ -103,17 +109,17 @@ const ProductGrid = () => {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="flex items-center">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium ml-1">{product.rating}</span>
+                    <span className="text-sm font-medium ml-1">{product.rating || 0}</span>
                   </div>
-                  <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
+                  <span className="text-sm text-muted-foreground">({product.review_count || 0} reviews)</span>
                 </div>
 
                 {/* Price */}
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-foreground">{product.price}</span>
-                  {product.originalPrice && (
+                  <span className="text-2xl font-bold text-foreground">${product.price}</span>
+                  {product.original_price && (
                     <span className="text-sm text-muted-foreground line-through">
-                      {product.originalPrice}
+                      ${product.original_price}
                     </span>
                   )}
                 </div>
@@ -122,12 +128,12 @@ const ProductGrid = () => {
               <CardFooter className="p-6 pt-0">
                 <Button 
                   className="w-full" 
-                  variant={product.inStock ? "default" : "secondary"}
-                  disabled={!product.inStock}
-                  onClick={() => product.inStock && handleAddToCart(product)}
+                  variant={product.in_stock ? "default" : "secondary"}
+                  disabled={!product.in_stock}
+                  onClick={() => product.in_stock && handleAddToCart(product)}
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
-                  {product.inStock ? "Add to Cart" : "Notify When Available"}
+                  {product.in_stock ? "Add to Cart" : "Notify When Available"}
                 </Button>
               </CardFooter>
             </Card>
