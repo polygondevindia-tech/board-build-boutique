@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Shield, Award } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-pcb.jpg";
 
 const Hero = () => {
@@ -26,8 +27,8 @@ const Hero = () => {
                 Shop PCBs
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg">
-                Custom Quote
+              <Button variant="outline" size="lg" asChild>
+                <Link to="/custom-quote">Custom Quote</Link>
               </Button>
             </div>
 
