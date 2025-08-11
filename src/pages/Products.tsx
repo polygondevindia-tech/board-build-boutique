@@ -5,7 +5,7 @@ import ProductGrid from "@/components/ProductGrid";
 
 const Products = () => {
   useEffect(() => {
-    document.title = "Products | PCB Boutique";
+    document.title = "Products | ccanand";
   }, []);
 
   return (

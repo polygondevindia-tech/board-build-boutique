@@ -13,7 +13,7 @@ const Footer = () => {
               <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
                 <div className="w-4 h-4 bg-primary-foreground rounded-sm"></div>
               </div>
-              <span className="text-xl font-bold text-foreground">PCB Boutique</span>
+              <span className="text-xl font-bold text-foreground">ccanand</span>
             </div>
             <p className="text-muted-foreground">
               Professional PCB design and manufacturing services for innovators worldwide.
@@ -89,7 +89,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; 2024 PCB Boutique. All rights reserved.</p>
+          <p>&copy; 2024 ccanand. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>

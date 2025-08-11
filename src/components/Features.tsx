@@ -41,7 +41,7 @@ const Features = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-            Why Choose PCB Boutique?
+            Why Choose ccanand?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             We combine cutting-edge technology with exceptional service to deliver the perfect PCB solution for your project

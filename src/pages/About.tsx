@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 const About = () => {
   useEffect(() => {
-    document.title = "About | PCB Boutique";
+    document.title = "About | ccanand";
   }, []);
 
   return (
@@ -12,7 +12,7 @@ const About = () => {
       <Header />
       <main>
         <section className="container mx-auto px-4 py-10">
-          <h1 className="text-3xl font-bold text-foreground mb-4">About PCB Boutique</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-4">About ccanand</h1>
           <p className="text-muted-foreground mb-6">
             We specialize in premium printed circuit boards with fast turnaround and rigorous quality control.
           </p>

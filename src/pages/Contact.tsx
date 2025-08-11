@@ -12,7 +12,7 @@ const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    document.title = "Contact | PCB Boutique";
+    document.title = "Contact | ccanand";
   }, []);
 
   const onSubmit = (e: FormEvent) => {

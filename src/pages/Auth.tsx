@@ -53,7 +53,7 @@ const Auth = () => {
         </Button>
 
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">PCB Boutique</h1>
+          <h1 className="text-3xl font-bold text-foreground">ccanand</h1>
           <p className="text-muted-foreground">Sign in to your account or create a new one</p>
         </div>
 
