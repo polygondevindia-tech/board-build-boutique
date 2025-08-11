@@ -10,15 +10,19 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Upload, Settings } from 'lucide-react';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
-
+import { useCategories } from '@/hooks/useCategories';
+import CategoryManager from '@/components/admin/CategoryManager';
+import BulkImportModal from '@/components/admin/BulkImportModal';
 const Admin = () => {
   const { user } = useAuth();
   const { isAdmin, isLoading } = useIsAdmin();
   const { products, loading, refreshProducts } = useProducts();
   const [isAdding, setIsAdding] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [showBulkImport, setShowBulkImport] = useState(false);
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -29,14 +33,7 @@ const Admin = () => {
     in_stock: true
   });
 
-  const categories = [
-    'Development Boards',
-    'Sensor Modules', 
-    'Prototyping',
-    'Expansion Boards',
-    'Power Supplies',
-    'Components'
-  ];
+  const { categories: categoriesList } = useCategories();
 
   const resetForm = () => {
     setFormData({
@@ -180,11 +177,32 @@ const Admin = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Product Management</h1>
-          <Button onClick={() => setIsAdding(true)} disabled={isAdding}>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Product
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={() => setShowBulkImport(true)}>
+              <Upload className="h-4 w-4 mr-2" />
+              Bulk Import
+            </Button>
+            <Button variant="outline" onClick={() => setShowCategoryManager((v) => !v)}>
+              <Settings className="h-4 w-4 mr-2" />
+              Manage Categories
+            </Button>
+            <Button onClick={() => setIsAdding(true)} disabled={isAdding}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Product
+            </Button>
+          </div>
         </div>
+
+        {showCategoryManager && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Category Manager</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CategoryManager />
+            </CardContent>
+          </Card>
+        )}
 
         {isAdding && (
           <Card className="mb-8">
@@ -210,9 +228,9 @@ const Admin = () => {
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                        ))}
+                          {categoriesList.map((cat) => (
+                            <SelectItem key={cat.id} value={cat.name}>{cat.name}</SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -311,6 +329,7 @@ const Admin = () => {
             ))
           )}
         </div>
+        <BulkImportModal open={showBulkImport} onOpenChange={setShowBulkImport} onImported={() => { refreshProducts(); }} />
       </div>
     </div>
   );
