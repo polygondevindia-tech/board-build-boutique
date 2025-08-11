@@ -15,12 +15,12 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" aria-label="Home" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
               <div className="w-4 h-4 bg-primary-foreground rounded-sm"></div>
             </div>
             <span className="text-xl font-bold text-foreground">PCB Boutique</span>
-          </div>
+          </Link>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
