@@ -11,9 +11,11 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 
 const Admin = () => {
   const { user } = useAuth();
+  const { isAdmin, isLoading } = useIsAdmin();
   const { products, loading, refreshProducts } = useProducts();
   const [isAdding, setIsAdding] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
@@ -152,6 +154,21 @@ const Admin = () => {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">Please log in to access the admin panel.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!isLoading && !isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Admin Access Required</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Your account does not have admin permissions. Please contact an administrator.</p>
           </CardContent>
         </Card>
       </div>

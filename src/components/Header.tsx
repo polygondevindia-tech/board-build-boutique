@@ -4,11 +4,13 @@ import { ShoppingCart, Menu, Search, User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 import { Link, useNavigate } from "react-router-dom";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 
 const Header = () => {
   const { user, signOut } = useAuth();
   const { getTotalItems } = useCart();
   const navigate = useNavigate();
+  const { isAdmin } = useIsAdmin();
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-card/95">
@@ -28,6 +30,9 @@ const Header = () => {
             <Link to="/custom-quote" className="text-foreground hover:text-primary transition-colors">Custom PCB</Link>
             <Link to="/about" className="text-foreground hover:text-primary transition-colors">About</Link>
             <Link to="/contact" className="text-foreground hover:text-primary transition-colors">Contact</Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground hover:text-primary transition-colors">Admin</Link>
+            )}
           </nav>
 
           {/* Actions */}
