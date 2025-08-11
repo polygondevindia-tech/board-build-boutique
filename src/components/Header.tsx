@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Menu, Search, User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -24,10 +24,10 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-foreground hover:text-primary transition-colors">Products</a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">Custom PCB</a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">About</a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">Contact</a>
+            <Link to="/products" className="text-foreground hover:text-primary transition-colors">Products</Link>
+            <Link to="/custom-quote" className="text-foreground hover:text-primary transition-colors">Custom PCB</Link>
+            <Link to="/about" className="text-foreground hover:text-primary transition-colors">About</Link>
+            <Link to="/contact" className="text-foreground hover:text-primary transition-colors">Contact</Link>
           </nav>
 
           {/* Actions */}
