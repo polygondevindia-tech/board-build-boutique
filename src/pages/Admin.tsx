@@ -16,6 +16,8 @@ import { useCategories } from '@/hooks/useCategories';
 import CategoryManager from '@/components/admin/CategoryManager';
 import BulkImportModal from '@/components/admin/BulkImportModal';
 import OrdersTable from '@/components/admin/OrdersTable';
+import OrdersMonthlyChart from '@/components/admin/OrdersMonthlyChart';
+import SeedDemoOrders from '@/components/admin/SeedDemoOrders';
 const Admin = () => {
   const { user } = useAuth();
   const { isAdmin, isLoading } = useIsAdmin();
@@ -292,6 +294,17 @@ const Admin = () => {
             </CardContent>
           </Card>
         )}
+
+        {/* Orders Overview */}
+        <Card className="mb-8">
+          <CardHeader className="flex-row items-center justify-between">
+            <CardTitle>Orders Overview</CardTitle>
+            <SeedDemoOrders />
+          </CardHeader>
+          <CardContent>
+            <OrdersMonthlyChart />
+          </CardContent>
+        </Card>
 
         <OrdersTable />
 
