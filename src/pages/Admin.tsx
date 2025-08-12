@@ -15,6 +15,7 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useCategories } from '@/hooks/useCategories';
 import CategoryManager from '@/components/admin/CategoryManager';
 import BulkImportModal from '@/components/admin/BulkImportModal';
+import OrdersTable from '@/components/admin/OrdersTable';
 const Admin = () => {
   const { user } = useAuth();
   const { isAdmin, isLoading } = useIsAdmin();
@@ -291,6 +292,8 @@ const Admin = () => {
             </CardContent>
           </Card>
         )}
+
+        <OrdersTable />
 
         {/* Products List */}
         <div className="space-y-4">
