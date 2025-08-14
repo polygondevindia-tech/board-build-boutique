@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2, Upload, Settings } from 'lucide-react';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -295,56 +296,68 @@ const Admin = () => {
           </Card>
         )}
 
-        {/* Orders Overview */}
-        <Card className="mb-8">
-          <CardHeader className="flex-row items-center justify-between">
-            <CardTitle>Orders Overview</CardTitle>
-            <SeedDemoOrders />
-          </CardHeader>
-          <CardContent>
-            <OrdersMonthlyChart />
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">Order Overview</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="products">Product List</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="overview" className="space-y-6 mt-6">
+            <Card>
+              <CardHeader className="flex-row items-center justify-between">
+                <CardTitle>Orders Overview</CardTitle>
+                <SeedDemoOrders />
+              </CardHeader>
+              <CardContent>
+                <OrdersMonthlyChart />
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        <OrdersTable />
+          <TabsContent value="orders" className="mt-6">
+            <OrdersTable />
+          </TabsContent>
 
-        {/* Products List */}
-        <div className="space-y-4">
-          {loading ? (
-            <p>Loading products...</p>
-          ) : (
-            products.map((product) => (
-              <Card key={product.id}>
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold">{product.name}</h3>
-                      <p className="text-muted-foreground text-sm mb-2">{product.description}</p>
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="font-medium">${product.price}</span>
-                        {product.original_price && (
-                          <span className="text-muted-foreground line-through">${product.original_price}</span>
-                        )}
-                        <span className="bg-secondary px-2 py-1 rounded text-xs">{product.category}</span>
-                        <span className={`px-2 py-1 rounded text-xs ${product.in_stock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                          {product.in_stock ? 'In Stock' : 'Out of Stock'}
-                        </span>
+          <TabsContent value="products" className="mt-6">
+            <div className="space-y-4">
+              {loading ? (
+                <p>Loading products...</p>
+              ) : (
+                products.map((product) => (
+                  <Card key={product.id}>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold">{product.name}</h3>
+                          <p className="text-muted-foreground text-sm mb-2">{product.description}</p>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="font-medium">${product.price}</span>
+                            {product.original_price && (
+                              <span className="text-muted-foreground line-through">${product.original_price}</span>
+                            )}
+                            <span className="bg-secondary px-2 py-1 rounded text-xs">{product.category}</span>
+                            <span className={`px-2 py-1 rounded text-xs ${product.in_stock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                              {product.in_stock ? 'In Stock' : 'Out of Stock'}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 ml-4">
+                          <Button size="sm" variant="outline" onClick={() => handleEdit(product)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button size="sm" variant="destructive" onClick={() => handleDelete(product.id)}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2 ml-4">
-                      <Button size="sm" variant="outline" onClick={() => handleEdit(product)}>
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="destructive" onClick={() => handleDelete(product.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
         <BulkImportModal open={showBulkImport} onOpenChange={setShowBulkImport} onImported={() => { refreshProducts(); }} />
       </div>
     </div>
